@@ -3,13 +3,43 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink, HttpLink} from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import VueApollo from 'vue-apollo'
+
+Vue.use(VueApollo)
+
+// HTTP connection to the API
+const httpLink = new HttpLink({
+		// You should use an absolute URL here
+		uri: 'http://localhost:5000/graphql/batch',
+		headers: {
+				'Content-Type': 'application/graphql',
+		}
+});
+
+// Cache implementation
+const cache = new InMemoryCache()
+
+const apolloClient = new ApolloClient({
+		link: httpLink,
+		cache,
+		addTypename:false
+})
+const apolloProvider = new VueApollo({
+		defaultClient: apolloClient,
+})
+
+// Create the apollo client
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+		el: '#app',
+		apolloProvider,
+		router,
+		components: { App },
+		template: '<App/>'
 })

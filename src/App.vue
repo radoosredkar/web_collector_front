@@ -1,23 +1,41 @@
 <template>
 		<div id="app">
 
+<!--
 				<h1>Employees</h1>
 				<employee-form @add:employee="addEmployee" />
 						<employee-table v-bind:employees="employees" />
-								ttt
-								{{hello}}
+-->
+				<h1>Homes</h1>
+				<homes-table v-bind:homes="homes" />
 		</div>
 </template>
 
 <script>
 import EmployeeTable from '@/components/EmpoyeeTable.vue'
+import HomesTable from '@/components/HomesTable.vue'
 import EmployeeForm from '@/components/EmployeeForm.vue'
+import gql from 'graphql-tag'
 
 export default {
+		apollo: {
+				// Simple query that will update the 'hello' vue property
+				homes: gql`
+				query{
+				  homes {
+					id
+					title
+				    description
+				    price
+				  }
+				}
+				`,
+		},
 		name: 'App',
 		components: {
 				EmployeeForm,
-				EmployeeTable
+				EmployeeTable,
+				HomesTable,
 		},
 		data() {
 				return {
@@ -57,8 +75,6 @@ export default {
 						this.employees = [...this.employees, newEmployee];
 				}
 		},
-
-
 }
 </script>
 
