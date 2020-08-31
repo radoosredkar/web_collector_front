@@ -27,6 +27,7 @@ export default {
 					title
 				    description
 				    price
+				    dateCreated
 				  }
 				}
 				`,
