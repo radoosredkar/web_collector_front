@@ -1,11 +1,11 @@
 <template>
 		<div id="app">
 
-<!--
-				<h1>Employees</h1>
-				<employee-form @add:employee="addEmployee" />
-						<employee-table v-bind:employees="employees" />
--->
+				<!--
+			<h1>Employees</h1>
+			<employee-form @add:employee="addEmployee" />
+			<employee-table v-bind:employees="employees" />
+				-->
 				<h1>Homes</h1>
 				<homes-table v-bind:homes="homes" />
 		</div>
@@ -25,9 +25,9 @@ export default {
 				  homes {
 					id
 					title
-				    description
-				    price
-				    dateCreated
+					description
+					price
+					dateCreated
 				  }
 				}
 				`,
@@ -74,6 +74,9 @@ export default {
 						const newEmployee = { ...employee, id };
 
 						this.employees = [...this.employees, newEmployee];
+				},
+				sortHomes(home) {
+						return homes.sort((a,b)=>(a.price>b.price)? 1 : -1)
 				}
 		},
 }
