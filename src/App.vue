@@ -26,8 +26,11 @@ export default {
 					id
 					title
 					description
+					source
 					price
 					dateCreated
+					image
+					advUrl
 				  }
 				}
 				`,
