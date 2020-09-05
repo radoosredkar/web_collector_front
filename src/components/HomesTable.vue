@@ -1,19 +1,22 @@
 <template>
 		<div id="homes-table">
+				<input placeholder="filter by description, title, source" v-model="filter">
+				<input placeholder="price from" v-model="filter_price_from">
+				<input placeholder="price from" v-model="filter_price_to">
 				<table class="zui-table">
 						<thead>
 								<tr>
-										<th>#</th>
-										<th>Title</th>
+										<th v-on:click="sortAsc('id')">#</th>
+										<th v-on:click="sortAsc('title')">Title</th>
 										<th>Description</th>
-										<th>Price</th>
-										<th>Image</th>
+										<th v-on:click="sortAsc('price')">Price</th>
+										<th>image</th>
 										<th>Source</th>
 										<th>Date Created</th>
 								</tr>
 						</thead>
 						<tbody>
-								<tr v-for="home in homes " :key="home.id">
+								<tr v-for="home in sortedHomes ">
 										<td>{{home.id}}</td>
 										<td>{{home.title}}</td>
 										<td>{{home.description}}</td>
@@ -35,11 +38,52 @@
 export default {
 		name: 'homes-table',
 		props: {
-				homes:Array
+				homes:Array,
+		},
+		data() {
+				return {
+						filter:'',
+						filter_price_from:null,
+						filter_price_to:null,
+						sortBy:'',
+						sortDir:1,
+						sortedHomesHandler:Array
+				}
+		},
+		computed: {	
+				sortedHomes: function() {
+						if (this.sortBy){
+								this.sortedHomesHandler = this.homes.sort((a,b)=>{
+										return a[this.sortBy]>b[this.sortBy] * this.sortDir;
+								});
+						}else {
+								this.sortedHomesHandler = this.homes;
+						}
+						if (this.sortedHomesHandler && (this.filter || this.filter_price_from || this.filter_price_to)){
+								var price_from = this.filter_price_from || 0;
+								var price_to = this.filter_price_to || 9999999;
+								this.filter = this.filter.toUpperCase();
+								this.sortedHomesHandler = this.sortedHomesHandler.filter(row=>{
+										return (row.title.toUpperCase().includes(this.filter)
+												|| row.description.toUpperCase().includes(this.filter)
+												|| row.source.toUpperCase().includes(this.filter)
+												)
+												&& (
+												row.price >= price_from
+												&& row.price <= price_to
+												)
+										;
+								});
+						}
+						return this.sortedHomesHandler;
+				}
 		},
 		methods: {
-				sortAsc: function(){
-						return this.homes.sort(function(a,b){return a.id-b.id;});
+				sortAsc: function(sort){
+						if (sort==this.sortBy){
+								this.sortDir +=-1;
+						}	
+						this.sortBy = sort;
 				}
 		}
 }
