@@ -29,6 +29,7 @@ export default {
 					source
 					price
 					dateCreated
+					dateFound
 					image
 					advUrl
 				  }

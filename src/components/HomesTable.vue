@@ -13,6 +13,7 @@
 										<th>image</th>
 										<th>Source</th>
 										<th>Date Created</th>
+										<th>Date Found</th>
 								</tr>
 						</thead>
 						<tbody>
@@ -28,6 +29,7 @@
 										</td>
 										<td>{{home.source}}</td>
 										<td>{{home.dateCreated}}</td>
+										<td>{{home.dateFound}}</td>
 								</tr>
 						</tbody>
 				</table>
