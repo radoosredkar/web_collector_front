@@ -12,8 +12,8 @@
 										<th v-on:click="sortAsc('price')">Price</th>
 										<th>image</th>
 										<th>Source</th>
-										<th>Date Created</th>
-										<th>Date Found</th>
+										<th v-on:click="sortAsc('dateCreated')">Date Created</th>
+										<th v-on:click="sortAsc('dateFound')">Last Viewed Date</th>
 								</tr>
 						</thead>
 						<tbody>
@@ -21,7 +21,7 @@
 										<td>{{home.id}}</td>
 										<td>{{home.title}}</td>
 										<td>{{home.description}}</td>
-										<td>{{home.price}}</td>
+										<td>{{formatNumber(home.price)}}</td>
 										<td>
 												<a target="__blank__" :href="home.advUrl">
 														<img :src="home.image" class="image">
@@ -56,7 +56,11 @@ export default {
 				sortedHomes: function() {
 						if (this.sortBy){
 								this.sortedHomesHandler = this.homes.sort((a,b)=>{
-										return a[this.sortBy]>b[this.sortBy] * this.sortDir;
+										if (this.sortBy == 'dateFound' || this.sortBy == 'dateCreated') {
+												return Date.parse(a[this.sortBy])>Date.parse(b[this.sortBy]) * this.sortDir;
+										} else {
+												return a[this.sortBy]>b[this.sortBy] * this.sortDir;
+										}
 								});
 						}else {
 								this.sortedHomesHandler = this.homes;
@@ -69,10 +73,10 @@ export default {
 										return (row.title.toUpperCase().includes(this.filter)
 												|| row.description.toUpperCase().includes(this.filter)
 												|| row.source.toUpperCase().includes(this.filter)
-												)
+										)
 												&& (
-												row.price >= price_from
-												&& row.price <= price_to
+														row.price >= price_from
+														&& row.price <= price_to
 												)
 										;
 								});
@@ -86,6 +90,9 @@ export default {
 								this.sortDir +=-1;
 						}	
 						this.sortBy = sort;
+				},
+				formatNumber: function(num){
+						return num.toLocaleString('sl');
 				}
 		}
 }
