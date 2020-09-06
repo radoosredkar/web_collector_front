@@ -6,7 +6,7 @@
 			<employee-form @add:employee="addEmployee" />
 			<employee-table v-bind:employees="employees" />
 				-->
-				<h1>Homes</h1>
+				<h1>Homes({{noOfAllHomes}})</h1>
 				<homes-table v-bind:homes="homes" />
 		</div>
 </template>
@@ -68,6 +68,11 @@ export default {
 						],
 				}
 		},
+		computed: {
+			noOfAllHomes: function(){
+				return this.homes && this.homes.length;
+			}
+		},
 		methods:{
 				addEmployee(employee) {
 						const lastId =
@@ -78,9 +83,6 @@ export default {
 						const newEmployee = { ...employee, id };
 
 						this.employees = [...this.employees, newEmployee];
-				},
-				sortHomes(home) {
-						return homes.sort((a,b)=>(a.price>b.price)? 1 : -1)
 				}
 		},
 }
