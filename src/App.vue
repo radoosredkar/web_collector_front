@@ -7,15 +7,18 @@
 			<employee-table v-bind:employees="employees" />
 				-->
 				<h1>Homes({{noOfAllHomes}})</h1>
-				<homes-table v-bind:homes="homes" />
+				<homes-table v-bind:homes="homes" v-on:refresh="refreshData()" v-bind:all_refreshed="all_refreshed" />
 		</div>
 </template>
 
 <script>
+import Vue from 'vue'
 import EmployeeTable from '@/components/EmpoyeeTable.vue'
 import HomesTable from '@/components/HomesTable.vue'
 import EmployeeForm from '@/components/EmployeeForm.vue'
 import gql from 'graphql-tag'
+var ajax = require("vuejs-ajax")
+Vue.use(ajax);
 
 export default {
 		apollo: {
@@ -66,12 +69,13 @@ export default {
 										email: 'rado.osredkar@gmail.com',
 								},
 						],
+					all_refreshed: 0
 				}
 		},
 		computed: {
-			noOfAllHomes: function(){
-				return this.homes && this.homes.length;
-			}
+				noOfAllHomes: function(){
+						return this.homes && this.homes.length;
+				}
 		},
 		methods:{
 				addEmployee(employee) {
@@ -83,6 +87,21 @@ export default {
 						const newEmployee = { ...employee, id };
 
 						this.employees = [...this.employees, newEmployee];
+				},
+				refreshData(){
+					this.loadData(this);
+				},	
+				loadData(context) {
+								this.all_refreshed = NaN;
+						Vue.ajax({
+								url: "http://localhost:5000/refresh",
+								method: "get" // post, put, patch, delete, head, jsonp
+						}).then(function(response) {
+								context.all_refreshed = response.data;
+							return response.data;
+						}, function(response) {
+								console.log("Error", response.statusText)
+						})
 				}
 		},
 }
