@@ -19,3 +19,6 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+- Add auto refreshing of semaphores on refresh
+- Refacto apollo according to https://v4.apollo.vuejs.org/guide-composable/query.html#loading-state 
