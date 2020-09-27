@@ -7,7 +7,8 @@
 			<employee-table v-bind:employees="employees" />
 				-->
 				<h1>Homes({{noOfAllHomes}})</h1>
-				<homes-table v-bind:homes="homes" v-on:refresh="refreshData()" v-bind:all_refreshed="all_refreshed" />
+				<h1>Archived({{noOfAllHomesArchived}})</h1>
+				<homes-table v-bind:homes="visible" v-on:refresh="refreshData()" v-bind:all_refreshed="all_refreshed" />
 		</div>
 </template>
 
@@ -22,27 +23,34 @@ Vue.use(ajax);
 
 export default {
 		apollo: {
-				// Simple query that will update the 'hello' vue property
-				homes: gql`
-				query{
-				  homes {
-					id
-					title
-					description
-					source
-					price
-					dateCreated
-					dateFound
-					image
-					advUrl
-				  }
-				}
+			archived: {
+				query: gql`
+						query{
+						  archived: home(archived:1) {
+							id
+						  }
+						  visible: home(archived:0) {
+							id
+							title
+							description
+							source
+							price
+							dateCreated
+							dateFound
+							image
+							advUrl
+						  }
+						}
 				`,
+				result(data){
+					this.visible = data.data.visible,
+					this.archived = data.data.archived
+				}
+
+			}
 		},
 		name: 'App',
 		components: {
-				EmployeeForm,
-				EmployeeTable,
 				HomesTable,
 		},
 		data() {
@@ -69,12 +77,16 @@ export default {
 										email: 'rado.osredkar@gmail.com',
 								},
 						],
-					all_refreshed: 0
+					all_refreshed: 0,
+					visible:[]
 				}
 		},
 		computed: {
 				noOfAllHomes: function(){
-						return this.homes && this.homes.length;
+						return this. visible && this. visible.length;
+				},
+				noOfAllHomesArchived: function(){
+						return this.archived && this.archived.length;
 				}
 		},
 		methods:{
@@ -89,7 +101,9 @@ export default {
 						this.employees = [...this.employees, newEmployee];
 				},
 				refreshData(){
-					this.loadData(this);
+					//this.loadData(this);
+					console.log(this.$apollo);
+					this.$apollo.queries.archived.refetch();
 				},	
 				loadData(context) {
 								this.all_refreshed = NaN;
