@@ -1,5 +1,8 @@
 # web_collector
 
+- Add refreshing and filtering from server
+- Check wierd broken link error
+- Add archieved filter toogle
 > A Vue.js project
 
 ## Build Setup
