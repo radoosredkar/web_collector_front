@@ -1,5 +1,10 @@
 # web_collector
-
+- Create build command that will:
+	- npm install
+	- npm build
+- Add refreshing and filtering from server
+- Check wierd broken link error
+- Add archieved filter toogle
 > A Vue.js project
 
 ## Build Setup
@@ -16,6 +21,13 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+
+docker build -t wsfront web_collector
+docker run -dit --network wsc-network -p:8080:8080 --name wsfront -v ~/software/javascript/web_collector:/usr/app wsfront 
+
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+- Add auto refreshing of semaphores on refresh
+- Refacto apollo according to https://v4.apollo.vuejs.org/guide-composable/query.html#loading-state 

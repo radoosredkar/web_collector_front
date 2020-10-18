@@ -15,7 +15,7 @@
 										<th>image</th>
 										<th>Source</th>
 										<th v-on:click="sortAsc('dateCreated')">Date Created</th>
-										<th v-on:click="sortAsc('dateFound')">Last Viewed Date</th>
+										<th v-on:click="sortAsc('dateFound')">Last Found Date</th>
 								</tr>
 						</thead>
 						<tbody>
