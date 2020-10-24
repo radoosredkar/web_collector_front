@@ -21,7 +21,8 @@ WORKDIR /usr/app
 
 EXPOSE 8080
 
-RUN echo "npm run build" > /usr/bin/build
+RUN echo "npm run install" > /usr/bin/build
+RUN echo "npm run build" >> /usr/bin/build
 RUN echo "http-server dist" > /usr/bin/run
 
 RUN chmod +x /usr/bin/build
