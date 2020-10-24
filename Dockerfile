@@ -20,4 +20,10 @@ WORKDIR /usr/app
 #RUN npm run build
 
 EXPOSE 8080
+
+RUN echo "npm run build" > /usr/bin/build
+RUN echo "http-server dist" > /usr/bin/run
+
+RUN chmod +x /usr/bin/build
+RUN chmod +x /usr/bin/run
 #CMD [ "http-server", "dist" ]
