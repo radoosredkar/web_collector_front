@@ -24,6 +24,8 @@ EXPOSE 8080
 RUN echo "npm run install" > /usr/bin/build
 RUN echo "npm run build" >> /usr/bin/build
 RUN echo "http-server dist" > /usr/bin/run
+RUN echo "export HOST=0.0.0.0" > /usr/bin/run-dev
+RUN echo "npm run dev" >> /usr/bin/run-dev
 
 RUN chmod +x /usr/bin/build
 RUN chmod +x /usr/bin/run
