@@ -1,6 +1,5 @@
 # web_collector
 - deploy to cloud
-- add hot reloads on code change when running in docker
 - Add refreshing and filtering from server
 - Check wierd broken link error
 - Add archieved filter toogle
