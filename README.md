@@ -3,6 +3,12 @@
 - Add refreshing and filtering from server
 - Check wierd broken link error
 - Add archieved filter toogle
+- Add manual move to and from archive
+- Update interface
+- Add changing of the filter (view current filter)
+- Add favorites filter
+- Add comments crud
+- Check refreshing and add automatic reload after successful refresh
 > A Vue.js project
 
 ## Build Setup
