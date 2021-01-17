@@ -1,14 +1,15 @@
-<template>
+			<h1>Employees</h1><template>
 		<div id="app">
 
 				<!--
-			<h1>Employees</h1>
+
 			<employee-form @add:employee="addEmployee" />
 			<employee-table v-bind:employees="employees" />
 				-->
 				<h1>Homes({{noOfAllHomes}})</h1>
-				<h1>Archived({{noOfAllHomesArchived}})</h1>
-				<homes-table v-bind:homes="visible" v-on:refresh="refreshData()" v-bind:all_refreshed="all_refreshed" />
+				<h3>Archived({{noOfAllHomesArchived}})</h3>
+				<h3>All refreshed {{all_refreshed}} ({{last_refresh_date}})</h3>
+				<homes-table v-bind:homes="visible" v-on:refresh="refreshData()"/>
 		</div>
 </template>
 
@@ -78,6 +79,7 @@ export default {
 								},
 						],
 					all_refreshed: 0,
+					last_refresh_date: 'Not Yet Refreshed',
 					visible:[]
 				}
 		},
@@ -101,17 +103,18 @@ export default {
 						this.employees = [...this.employees, newEmployee];
 				},
 				refreshData(){
-					//this.loadData(this);
-					console.log(this.$apollo);
-					this.$apollo.queries.archived.refetch();
+						console.log( this.loadData());
 				},	
-				loadData(context) {
-								this.all_refreshed = NaN;
+				async loadData(context) {
+						var self = this;
+						self.all_refreshed = 0;
+						self.last_refresh_date = "refreshing";
 						Vue.ajax({
 								url: "http://localhost:5000/refresh",
 								method: "get" // post, put, patch, delete, head, jsonp
 						}).then(function(response) {
-								context.all_refreshed = response.data;
+							self.all_refreshed = response.data;
+							self.last_refresh_date = new Date().toLocaleString();
 							return response.data;
 						}, function(response) {
 								console.log("Error", response.statusText)

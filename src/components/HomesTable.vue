@@ -4,7 +4,6 @@
 				<input placeholder="price from" v-model="filter_price_from">
 				<input placeholder="price from" v-model="filter_price_to">
 				<input type="button" value="refresh" v-on:click="$emit('refresh')">
-				<h3>All refreshed {{all_refreshed}}</h3>
 				<table class="zui-table">
 						<thead>
 								<tr>
@@ -42,8 +41,7 @@
 export default {
 		name: 'homes-table',
 		props: {
-				homes:Array,
-				all_refreshed:Number
+				homes:Array
 		},
 		data() {
 				return {
