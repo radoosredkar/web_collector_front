@@ -7,6 +7,7 @@
 - Add changing of the filter (view current filter)
 - Add favorites filter
 - Add comments crud
+- Better logging on what is refreshed + add no of loaded from bolha, nepremicnine and archieved to frontend
 > A Vue.js project
 
 In Progress
