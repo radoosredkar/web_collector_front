@@ -1,11 +1,5 @@
-			<h1>Employees</h1><template>
+			<template>
 		<div id="app">
-
-				<!--
-
-			<employee-form @add:employee="addEmployee" />
-			<employee-table v-bind:employees="employees" />
-				-->
 				<h1>Homes({{noOfAllHomes}})</h1>
 				<h3>Archived({{noOfAllHomesArchived}})</h3>
 				<h3>All refreshed {{all_refreshed}} ({{last_refresh_date}})</h3>
@@ -21,8 +15,9 @@ import EmployeeForm from '@/components/EmployeeForm.vue'
 import gql from 'graphql-tag'
 var ajax = require("vuejs-ajax")
 Vue.use(ajax);
-
+window.dataApollo = NaN;
 export default {
+		//mounted (){},
 		apollo: {
 			archived: {
 				query: gql`
@@ -44,6 +39,7 @@ export default {
 						}
 				`,
 				result(data){
+					//window.dataApollo = data;
 					this.visible = data.data.visible,
 					this.archived = data.data.archived
 				}
@@ -56,28 +52,6 @@ export default {
 		},
 		data() {
 				return {
-						employees: [
-								{
-										id: 1,
-										name: 'Richard Hendricks',
-										email: 'richard@piedpiper.com',
-								},
-								{
-										id: 2,
-										name: 'Bertram Gilfoyle',
-										email: 'gilfoyle@piedpiper.com',
-								},
-								{
-										id: 3,
-										name: 'Dinesh Chugtai',
-										email: 'dinesh@piedpiper.com',
-								},
-								{
-										id: 4,
-										name: 'Rado Osredkar',
-										email: 'rado.osredkar@gmail.com',
-								},
-						],
 					all_refreshed: 0,
 					last_refresh_date: 'Not Yet Refreshed',
 					visible:[]
@@ -103,9 +77,10 @@ export default {
 						this.employees = [...this.employees, newEmployee];
 				},
 				refreshData(){
-						console.log( this.loadData());
+						this.loadData();
 				},	
 				async loadData(context) {
+						//Load data to the database table
 						var self = this;
 						self.all_refreshed = 0;
 						self.last_refresh_date = "refreshing";
@@ -115,6 +90,7 @@ export default {
 						}).then(function(response) {
 							self.all_refreshed = response.data;
 							self.last_refresh_date = new Date().toLocaleString();
+							self.$apollo.queries.archived.refetch();//TODO:Move this to refreshData!!!
 							return response.data;
 						}, function(response) {
 								console.log("Error", response.statusText)
