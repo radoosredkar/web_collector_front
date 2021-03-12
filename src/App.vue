@@ -21,15 +21,16 @@ import gql from 'graphql-tag'
 var ajax = require("vuejs-ajax")
 Vue.use(ajax);
 
+console.log(process.env);
 export default {
 		apollo: {
 			archived: {
 				query: gql`
 						query{
-						  archived: home(archived:1) {
+						  archived: homes(archived:1) {
 							id
 						  }
-						  visible: home(archived:0) {
+						  visible: homes(archived:0) {
 							id
 							title
 							description
@@ -108,7 +109,7 @@ export default {
 				loadData(context) {
 								this.all_refreshed = NaN;
 						Vue.ajax({
-								url: "http://localhost:5000/refresh",
+								url: process.env.URL_REFRESH,
 								method: "get" // post, put, patch, delete, head, jsonp
 						}).then(function(response) {
 								context.all_refreshed = response.data;
