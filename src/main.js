@@ -9,9 +9,10 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 Vue.use(VueApollo);
 // HTTP connection to the API
+console.log(process.env);
 const httpLink = new HttpLink({
 		// You should use an absolute URL here
-		uri: 'http://localhost:5000/graphql/batch',
+		uri: process.env.URL_BATCH,
 		headers: {
 				'Content-Type': 'application/graphql',
 		}
