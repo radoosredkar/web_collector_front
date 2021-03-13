@@ -1,5 +1,5 @@
 # web_collector
-- deploy to cloud
+## To Do
 - Add refreshing and filtering from server
 - Check wierd broken link error
 - Add archieved filter toogle
@@ -10,6 +10,9 @@
 - Add comments crud
 - Check refreshing and add automatic reload after successful refresh
 > A Vue.js project
+
+## Done
+- deploy to cloud
 
 ## Build Setup
 
