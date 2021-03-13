@@ -6,7 +6,7 @@
 	  <employee-form @add:employee="addEmployee" />
 	  <employee-table v-bind:employees="employees" />
 		-->
-		<h1>Homes({{noOfAllHomes}})</h1>
+		<h1><spinner ref="spinner"></spinner>Homes({{noOfAllHomes}})</h1>
 		<h1>Archived({{noOfAllHomesArchived}})</h1>
 		<homes-table v-bind:homes="visible" v-on:refresh="refreshData()" v-bind:all_refreshed="all_refreshed" />
 	</div>
@@ -17,6 +17,7 @@ import Vue from 'vue'
 import EmployeeTable from '@/components/EmpoyeeTable.vue'
 import HomesTable from '@/components/HomesTable.vue'
 import EmployeeForm from '@/components/EmployeeForm.vue'
+import Spinner from '@/components/Spinner.vue'
 import gql from 'graphql-tag'
 var ajax = require("vuejs-ajax")
 Vue.use(ajax);
@@ -53,6 +54,7 @@ export default {
 	name: 'App',
 	components: {
 		HomesTable,
+		Spinner
 	},
 	data() {
 		return {
@@ -102,11 +104,11 @@ export default {
 			this.employees = [...this.employees, newEmployee];
 		},
 		refreshData(){
+			this.$refs.spinner.show();
 			this.loadData(this);
 			//this.$apollo.queries.archived.refetch();
 		},	
 		loadData(context) {
-			console.log(process.env.URL_REFRESH);
 			this.all_refreshed = NaN;
 			parent = this;
 			Vue.ajax({
@@ -116,9 +118,10 @@ export default {
 				timeout: 600000// post, put, patch, delete, head, jsonp
 			}).then(
 				function(response) {
-					console.log('END OK');
+					//console.log('END OK');
 					context.all_refreshed = response.data['all_changed_items'];
 					parent.$apollo.queries.archived.refetch();
+					parent.$refs.spinner.hide();
 					return response.data;
 				}, 
 				function(response) {
