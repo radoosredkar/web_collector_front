@@ -15,6 +15,7 @@ const httpLink = new HttpLink({
 		uri: process.env.URL_BATCH,
 		headers: {
 				'Content-Type': 'application/graphql',
+				'Access-Control-Allow-Origin': '*'
 		}
 });
 
