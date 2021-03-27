@@ -4,6 +4,7 @@
 				<input placeholder="price from" v-model="filter_price_from">
 				<input placeholder="price from" v-model="filter_price_to">
 				<input type="button" value="refresh" v-on:click="$emit('refresh')">
+				<input type="button" value="reload" v-on:click="$emit('reload')">
 				<h3>All refreshed {{all_refreshed}}</h3>
 				<table class="zui-table">
 						<thead>
@@ -14,6 +15,7 @@
 										<th v-on:click="sortAsc('price')">Price</th>
 										<th>image</th>
 										<th>Source</th>
+										<th>Comments</th>
 										<th v-on:click="sortAsc('dateCreated')">Date Created</th>
 										<th v-on:click="sortAsc('dateFound')">Last Found Date</th>
 								</tr>
@@ -30,6 +32,7 @@
 												</a>
 										</td>
 										<td>{{home.source}}</td>
+										<td>{{home.comments}}</td>
 										<td>{{home.dateCreated}}</td>
 										<td>{{home.dateFound}}</td>
 								</tr>
