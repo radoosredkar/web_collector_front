@@ -22,7 +22,6 @@ import gql from 'graphql-tag'
 var ajax = require("vuejs-ajax")
 Vue.use(ajax);
 
-console.log(process.env);
 export default {
 	apollo: {
 		archived: {
@@ -42,6 +41,7 @@ export default {
 								dateFound
 								image
 								advUrl
+								type
 							}
 						}
 				`,
@@ -59,28 +59,6 @@ export default {
 	},
 	data() {
 		return {
-			employees: [
-				{
-					id: 1,
-					name: 'Richard Hendricks',
-					email: 'richard@piedpiper.com',
-				},
-				{
-					id: 2,
-					name: 'Bertram Gilfoyle',
-					email: 'gilfoyle@piedpiper.com',
-				},
-				{
-					id: 3,
-					name: 'Dinesh Chugtai',
-					email: 'dinesh@piedpiper.com',
-				},
-				{
-					id: 4,
-					name: 'Rado Osredkar',
-					email: 'rado.osredkar@gmail.com',
-				},
-			],
 			all_refreshed: 0,
 			visible:[]
 		}
@@ -128,7 +106,6 @@ export default {
 				timeout: 600000,
 			}).then(
 				function(response) {
-					//console.log('END OK');
 					context.all_refreshed = response.data['all_changed_items'];
 					parent.$apollo.queries.archived.refetch();
 					parent.$refs.spinner.hide();
