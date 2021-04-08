@@ -1,6 +1,13 @@
 <template>
 		<div id="homes-table">
 				<input placeholder="filter by description, title, source" v-model="filter">
+				<select v-model="filter_type">
+					<option value="">all</option>
+					<option value="NEW_RECORD">new record</option>
+					<option value="CANDIDATE">candidate</option>
+					<option value="NOT_CANDIDATE">not candidate</option>
+					<option value="ARCHIVED">archived</option>
+				</select>
 				<input placeholder="price from" v-model="filter_price_from">
 				<input placeholder="price from" v-model="filter_price_to">
 				<input type="button" value="refresh" v-on:click="$emit('refresh')">
@@ -18,6 +25,7 @@
 										<th>Comments</th>
 										<th v-on:click="sortAsc('dateCreated')">Date Created</th>
 										<th v-on:click="sortAsc('dateFound')">Last Found Date</th>
+										<th>Type</th>
 								</tr>
 						</thead>
 						<tbody>
@@ -35,6 +43,7 @@
 										<td>{{home.comments}}</td>
 										<td>{{home.dateCreated}}</td>
 										<td>{{home.dateFound}}</td>
+										<td>{{home.type}}</td>
 								</tr>
 						</tbody>
 				</table>
@@ -51,6 +60,7 @@ export default {
 		data() {
 				return {
 						filter:'',
+						filter_type:'',
 						filter_price_from:null,
 						filter_price_to:null,
 						sortBy:'',
@@ -71,10 +81,13 @@ export default {
 						}else {
 								this.sortedHomesHandler = this.homes;
 						}
-						if (this.sortedHomesHandler && (this.filter || this.filter_price_from || this.filter_price_to)){
+						if (this.sortedHomesHandler && (
+								this.filter || this.filter_price_from || this.filter_price_to || this.filter_type
+						)){
 								var price_from = this.filter_price_from || 0;
 								var price_to = this.filter_price_to || 9999999;
 								this.filter = this.filter.toUpperCase();
+								this.filter_type = this.filter_type.toUpperCase();
 								this.sortedHomesHandler = this.sortedHomesHandler.filter(row=>{
 										return (row.title.toUpperCase().includes(this.filter)
 												|| row.description.toUpperCase().includes(this.filter)
@@ -83,6 +96,8 @@ export default {
 												&& (
 														row.price >= price_from
 														&& row.price <= price_to
+												) && (
+													row.type.toUpperCase() == this.filter_type
 												)
 										;
 								});
