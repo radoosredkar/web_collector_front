@@ -29,5 +29,5 @@ RUN echo "npm run dev" >> /usr/bin/run-dev
 
 RUN chmod +x /usr/bin/build
 RUN chmod +x /usr/bin/run
-CMD [ "http-server", "dist" ]
-#CMD [ "npm", "run", "dev" ]
+#CMD [ "http-server", "dist" ]
+CMD [ "npm", "run", "dev" ]
