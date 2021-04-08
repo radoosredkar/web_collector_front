@@ -6,6 +6,7 @@
 					<option value="NEW_RECORD">new record</option>
 					<option value="CANDIDATE">candidate</option>
 					<option value="NOT_CANDIDATE">not candidate</option>
+					<option value="ARCHIVED">archived</option>
 				</select>
 				<input placeholder="price from" v-model="filter_price_from">
 				<input placeholder="price from" v-model="filter_price_to">

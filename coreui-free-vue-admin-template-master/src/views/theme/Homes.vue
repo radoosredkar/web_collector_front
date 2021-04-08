@@ -1,49 +1,86 @@
 <template>
-  <div>
-    <CCard>
-      <CCardHeader>
-        <CIcon name="cil-drop"/> Theme colors
-      </CCardHeader>
-      <CCardBody>
-        <CRow>
-          <ColorTheme color="bg-primary">
-            <h6>Brand Primary Color</h6>
-          </ColorTheme>
-          <ColorTheme color="bg-secondary"><h6>Brand Secondary Color</h6></ColorTheme>
-          <ColorTheme color="bg-success"><h6>Brand Success Color</h6></ColorTheme>
-          <ColorTheme color="bg-danger"><h6>Brand Danger Color</h6></ColorTheme>
-          <ColorTheme color="bg-warning"><h6>Brand Warning Color</h6></ColorTheme>
-          <ColorTheme color="bg-info"><h6>Brand Info Color</h6></ColorTheme>
-          <ColorTheme color="bg-light"><h6>Brand Light Color</h6></ColorTheme>
-          <ColorTheme color="bg-dark"><h6>Brand Dark Color</h6></ColorTheme>
-        </CRow>
-      </CCardBody>
-    </CCard>
-    <CCard>
-      <CCardHeader>
-        <CIcon name="cil-drop"/> Grays
-      </CCardHeader>
-      <CCardBody>
-        <CRow>
-          <ColorTheme color="bg-gray-100"><h6>Brand 100 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-200"><h6>Brand 200 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-300"><h6>Brand 300 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-400"><h6>Brand 400 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-500"><h6>Brand 500 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-600"><h6>Brand 600 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-700"><h6>Brand 700 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-800"><h6>Brand 800 Color</h6></ColorTheme>
-          <ColorTheme color="bg-gray-900"><h6>Brand 900 Color</h6></ColorTheme>
-        </CRow>
-      </CCardBody>
-    </CCard>
-  </div>
+  <CCardBody>
+    <CDataTable
+      :items="dateFilteredItems"
+      :fields="fields"
+      sorter
+      column-filter
+      hover
+    >
+      <template #registeredTimestamp-filter="{item}">
+        From:
+        <input
+          type="date"
+          :value="new Date(startDate).toISOString().substr(0, 10)"
+          @change="setDateFilter"
+          class="mr-2"
+        />
+        To:
+        <input
+          type="date"
+          :value="new Date(endDate).toISOString().substr(0, 10)"
+          @change="e => setDateFilter(e, 'end')"
+        />        
+      </template>
+      <template #registeredTimestamp="{item}">
+        <td>
+          {{ item.registeredDate }}
+        </td>
+      </template>
+    </CDataTable>
+  </CCardBody>
 </template>
-
 <script>
-import ColorTheme from './ColorTheme'
+const items = [
+  { username: 'Samppa Nori', registered: { date: '2012/01/01', timestamp: 1325376000000 }, role: 'Member', status: 'Active'},
+  { username: 'Estavan Lykos', registered: { date: '2012/02/01', timestamp: 1328054400000 }, role: 'Staff', status: 'Banned'},
+  { username: 'Chetan Mohamed', registered: { date: '2012/02/01', timestamp: 1328054400000 }, role: 'Admin', status: 'Inactive'},
+  { username: 'Derick Maximinus', registered: { date: '2012/03/01', timestamp: 1330560000000 }, role: 'Member', status: 'Pending'},
+  { username: 'Friderik Dávid', registered: { date: '2012/01/21', timestamp: 1327104000000 }, role: 'Staff', status: 'Active'},
+]
+
+const fields = [
+  'username',
+  { key: 'registeredTimestamp', label: 'Registered' },
+  'role',
+  'status'
+]
+
 export default {
-  name: 'Colors',
-  components: { ColorTheme }
+  name: 'itemsComputationTable',
+  data () {
+    return {
+      fields,
+      startDate: 1325376000000,
+      endDate: 1330560000000
+    }
+  },
+  computed: {
+    computedItems () {
+      return items.map(item => {
+        return { 
+          ...item, 
+          registeredTimestamp: item.registered.timestamp, 
+          registeredDate: item.registered.date 
+        }
+      })
+    },
+    dateFilteredItems() {
+      return this.computedItems.filter(item => {
+        const date = item.registeredTimestamp
+        return date >= this.startDate && date <= this.endDate
+      })
+    }
+  },
+  methods: {
+    setDateFilter (e, end) {
+      if (end) {
+        this.endDate = new Date(e.target.value).getTime()
+      } else {
+        this.startDate = new Date(e.target.value).getTime()
+      }
+    }
+  }
+
 }
 </script>
