@@ -6,8 +6,7 @@
 	  <employee-form @add:employee="addEmployee" />
 	  <employee-table v-bind:employees="employees" />
 		-->
-		<h1><spinner ref="spinner"></spinner>Homes({{noOfAllHomes}})</h1>
-		<h1>Archived({{noOfAllHomesArchived}})</h1>
+		<h1><spinner ref="spinner"></spinner>Homes</h1>
 		<homes-table  v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" @update="updateData" v-bind:all_refreshed="all_refreshed" />
 	</div>
 </template>

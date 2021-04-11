@@ -5,6 +5,7 @@
 					<option value="">all</option>
 					<option value="NEW_RECORD">new record</option>
 					<option value="CANDIDATE">candidate</option>
+					<option value="FAVORITES">favorites</option>
 					<option value="NOT_CANDIDATE">not candidate</option>
 					<option value="ARCHIVED">archived</option>
 				</select>
@@ -12,7 +13,7 @@
 				<input placeholder="price from" v-model="filter_price_to">
 				<input type="button" value="refresh" v-on:click="$emit('refresh')">
 				<input type="button" value="reload" v-on:click="$emit('reload')">
-				<h3>All refreshed {{all_refreshed}}</h3>
+				<h3>Visible {{visibleHomes}}  All refreshed {{all_refreshed}}</h3>
 				<table class="zui-table">
 						<thead>
 								<tr>
@@ -48,6 +49,7 @@
 													<option value="">all</option>
 													<option value="NEW_RECORD">new record</option>
 													<option value="CANDIDATE">candidate</option>
+													<option value="FAVORITES">favorites</option>
 													<option value="NOT_CANDIDATE">not candidate</option>
 													<option value="ARCHIVED">archived</option>
 												</select>
@@ -106,12 +108,15 @@ export default {
 														row.price >= price_from
 														&& row.price <= price_to
 												) && (
-													row.type.toUpperCase() == this.filter_type
+													this.filter_type == "" ? true : (row.type.toUpperCase() == this.filter_type)
 												)
 										;
 								});
 						}
 						return this.sortedHomesHandler;
+				},
+				visibleHomes: function() {
+					return this.sortedHomes.length
 				}
 		},
 		methods: {
