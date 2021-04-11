@@ -8,7 +8,7 @@
 		-->
 		<h1><spinner ref="spinner"></spinner>Homes({{noOfAllHomes}})</h1>
 		<h1>Archived({{noOfAllHomesArchived}})</h1>
-		<homes-table v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" v-bind:all_refreshed="all_refreshed" />
+		<homes-table  v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" @update="updateData" v-bind:all_refreshed="all_refreshed" />
 	</div>
 </template>
 
@@ -86,6 +86,27 @@ export default {
 			this.$refs.spinner.show();
 			this.$apollo.queries.archived.refetch();
 			this.$refs.spinner.hide();
+		},	
+		updateData(selected){
+			parent = this;
+			Vue.ajax({
+				url: 'http://localhost:5000/homes/1448607',
+				method: "patch",
+				headers: {
+					'Access-Control-Allow-Origin': '*'
+					/*,'Content-Type': 'application/json'*/
+				},
+				data: { "type": selected},
+				timeout: 600000,
+			}).then(
+				function(response) {
+					console.log(response);
+					return response.data;
+				}, 
+				function(response) {
+					console.log('END ERROR');
+					console.log("Error", response.statusText)
+				});
 		},	
 		reloadData(){
 			
