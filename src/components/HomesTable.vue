@@ -43,7 +43,15 @@
 										<td>{{home.comments}}</td>
 										<td>{{home.dateCreated}}</td>
 										<td>{{home.dateFound}}</td>
-										<td>{{home.type}}</td>
+										<td>
+												<select v-model="home.type" v-on:change="$emit('update', home.type)">
+													<option value="">all</option>
+													<option value="NEW_RECORD">new record</option>
+													<option value="CANDIDATE">candidate</option>
+													<option value="NOT_CANDIDATE">not candidate</option>
+													<option value="ARCHIVED">archived</option>
+												</select>
+										</td>
 								</tr>
 						</tbody>
 				</table>
@@ -55,7 +63,8 @@ export default {
 		name: 'homes-table',
 		props: {
 				homes:Array,
-				all_refreshed:Number
+				all_refreshed:Number,
+				selected:String
 		},
 		data() {
 				return {
