@@ -89,7 +89,7 @@ export default {
 		updateData(id, selected_type){
 			parent = this;
 			Vue.ajax({
-				url: env.process.URL_UPDATA + '/' + id,
+				url: process.env.URL_UPDATE + '/' + id,
 				method: "patch",
 				headers: {
 					'Access-Control-Allow-Origin': '*'
