@@ -86,20 +86,19 @@ export default {
 			this.$apollo.queries.archived.refetch();
 			this.$refs.spinner.hide();
 		},	
-		updateData(selected){
+		updateData(id, selected_type){
 			parent = this;
 			Vue.ajax({
-				url: 'http://localhost:5000/homes/1448607',
+				url: env.process.URL_UPDATA + '/' + id,
 				method: "patch",
 				headers: {
 					'Access-Control-Allow-Origin': '*'
 					/*,'Content-Type': 'application/json'*/
 				},
-				data: { "type": selected},
+				data: { "type": selected_type},
 				timeout: 600000,
 			}).then(
 				function(response) {
-					console.log(response);
 					return response.data;
 				}, 
 				function(response) {

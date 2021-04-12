@@ -45,7 +45,7 @@
 										<td>{{home.dateCreated}}</td>
 										<td>{{home.dateFound}}</td>
 										<td>
-												<select v-model="home.type" v-on:change="$emit('update', home.type)">
+												<select v-model="home.type" v-on:change="$emit('update', home.id, home.type)">
 													<option value="">all</option>
 													<option value="NEW_RECORD">new record</option>
 													<option value="CANDIDATE">candidate</option>
