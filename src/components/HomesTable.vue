@@ -41,7 +41,9 @@
 												</a>
 										</td>
 										<td>{{home.source}}</td>
-										<td>{{home.comments}}</td>
+										<td>
+										<textarea style="height:20vh" v-model="home.comments" type="text"/><button v-on:click="$emit('saveComment', home.id, home.comments)">Apply</button>
+										</td>
 										<td>{{home.dateCreated}}</td>
 										<td>{{home.dateFound}}</td>
 										<td>
@@ -103,6 +105,7 @@ export default {
 										return (row.title.toUpperCase().includes(this.filter)
 												|| row.description.toUpperCase().includes(this.filter)
 												|| row.source.toUpperCase().includes(this.filter)
+												|| row.comments.toUpperCase().includes(this.filter)
 										)
 												&& (
 														row.price >= price_from
