@@ -7,7 +7,7 @@
 	  <employee-table v-bind:employees="employees" />
 		-->
 		<h1><spinner ref="spinner"></spinner>Homes</h1>
-		<homes-table  v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" @update="updateData" v-bind:all_refreshed="all_refreshed" />
+		<homes-table  v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" @update="updateData" @saveComment="saveComment" v-bind:all_refreshed="all_refreshed" />
 	</div>
 </template>
 
@@ -86,6 +86,27 @@ export default {
 			this.$apollo.queries.archived.refetch();
 			this.$refs.spinner.hide();
 		},	
+		saveComment(id, comment){
+			console.log(id,comment);
+			parent = this;
+			Vue.ajax({
+				url: process.env.URL_UPDATE + '/' + id,
+				method: "patch",
+				headers: {
+					'Access-Control-Allow-Origin': '*'
+					/*,'Content-Type': 'application/json'*/
+				},
+				data: { "comments": comment},
+				timeout: 600000,
+			}).then(
+				function(response) {
+					return response.data;
+				}, 
+				function(response) {
+					console.log('END ERROR');
+					console.log("Error", response.statusText)
+				});
+		},
 		updateData(id, selected_type){
 			parent = this;
 			Vue.ajax({
