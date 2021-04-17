@@ -22,11 +22,11 @@
 										<th>Description</th>
 										<th v-on:click="sortAsc('price')">Price</th>
 										<th>image</th>
-										<th>Source</th>
 										<th>Comments</th>
+										<th>Type</th>
+										<th>Source</th>
 										<th v-on:click="sortAsc('dateCreated')">Date Created</th>
 										<th v-on:click="sortAsc('dateFound')">Last Found Date</th>
-										<th>Type</th>
 								</tr>
 						</thead>
 						<tbody>
@@ -40,12 +40,9 @@
 														<img :src="home.image" class="image">
 												</a>
 										</td>
-										<td>{{home.source}}</td>
 										<td>
-										<textarea style="height:20vh" v-model="home.comments" type="text"/><button v-on:click="$emit('saveComment', home.id, home.comments)">Apply</button>
+										<textarea style="height:20vh" v-model="home.comments" type="text" v-on:blur="$emit('saveComment', home.id, home.comments)"/>
 										</td>
-										<td>{{home.dateCreated}}</td>
-										<td>{{home.dateFound}}</td>
 										<td>
 												<select v-model="home.type" v-on:change="$emit('update', home.id, home.type)">
 													<option value="">all</option>
@@ -56,6 +53,9 @@
 													<option value="ARCHIVED">archived</option>
 												</select>
 										</td>
+										<td>{{home.source}}</td>
+										<td>{{home.dateCreated}}</td>
+										<td>{{home.dateFound}}</td>
 								</tr>
 						</tbody>
 				</table>
@@ -88,7 +88,7 @@ export default {
 										if (this.sortBy == 'dateFound' || this.sortBy == 'dateCreated') {
 												return Date.parse(a[this.sortBy])>Date.parse(b[this.sortBy]) * this.sortDir;
 										} else {
-												return a[this.sortBy]>b[this.sortBy] * this.sortDir;
+												return a[this.sortBy]>b[this.sortBy] * his.sortDir;
 										}
 								});
 						}else {
