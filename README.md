@@ -7,6 +7,7 @@
 > A Vue.js project
 
 ## Done
+- Add time of latest refresh
 - Add manual move to and from archive
 - Check refreshing and add automatic reload after successful refresh
 - Add comments crud
