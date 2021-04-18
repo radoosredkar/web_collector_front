@@ -2,16 +2,16 @@
 ## To Do
 - Add refreshing and filtering from server
 - Check wierd broken link error
-- Add archieved filter toogle
-- Add manual move to and from archive
 - Update interface
 - Add changing of the filter (view current filter)
-- Add favorites filter
-- Add comments crud
-- Check refreshing and add automatic reload after successful refresh
 > A Vue.js project
 
 ## Done
+- Add manual move to and from archive
+- Check refreshing and add automatic reload after successful refresh
+- Add comments crud
+- Add favorites filter
+- Add archieved filter toogle
 - deploy to cloud
 
 ## Build Setup
