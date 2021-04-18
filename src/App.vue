@@ -6,9 +6,8 @@
 	  <employee-form @add:employee="addEmployee" />
 	  <employee-table v-bind:employees="employees" />
 		-->
-		<h1><spinner ref="spinner"></spinner>Homes({{noOfAllHomes}})</h1>
-		<h1>Archived({{noOfAllHomesArchived}})</h1>
-		<homes-table v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" v-bind:all_refreshed="all_refreshed" />
+		<h1><spinner ref="spinner"></spinner>Homes</h1>
+		<homes-table  v-bind:homes="visible" v-on:refresh="refreshData()" v-on:reload="reloadData()" @update="updateData" @saveComment="saveComment" v-bind:all_refreshed="all_refreshed" />
 	</div>
 </template>
 
@@ -22,7 +21,6 @@ import gql from 'graphql-tag'
 var ajax = require("vuejs-ajax")
 Vue.use(ajax);
 
-console.log(process.env);
 export default {
 	apollo: {
 		archived: {
@@ -42,6 +40,7 @@ export default {
 								dateFound
 								image
 								advUrl
+								type
 							}
 						}
 				`,
@@ -59,28 +58,6 @@ export default {
 	},
 	data() {
 		return {
-			employees: [
-				{
-					id: 1,
-					name: 'Richard Hendricks',
-					email: 'richard@piedpiper.com',
-				},
-				{
-					id: 2,
-					name: 'Bertram Gilfoyle',
-					email: 'gilfoyle@piedpiper.com',
-				},
-				{
-					id: 3,
-					name: 'Dinesh Chugtai',
-					email: 'dinesh@piedpiper.com',
-				},
-				{
-					id: 4,
-					name: 'Rado Osredkar',
-					email: 'rado.osredkar@gmail.com',
-				},
-			],
 			all_refreshed: 0,
 			visible:[]
 		}
@@ -109,6 +86,47 @@ export default {
 			this.$apollo.queries.archived.refetch();
 			this.$refs.spinner.hide();
 		},	
+		saveComment(id, comment){
+			console.log(id,comment);
+			parent = this;
+			Vue.ajax({
+				url: process.env.URL_UPDATE + '/' + id,
+				method: "patch",
+				headers: {
+					'Access-Control-Allow-Origin': '*'
+					/*,'Content-Type': 'application/json'*/
+				},
+				data: { "comments": comment},
+				timeout: 600000,
+			}).then(
+				function(response) {
+					return response.data;
+				}, 
+				function(response) {
+					console.log('END ERROR');
+					console.log("Error", response.statusText)
+				});
+		},
+		updateData(id, selected_type){
+			parent = this;
+			Vue.ajax({
+				url: process.env.URL_UPDATE + '/' + id,
+				method: "patch",
+				headers: {
+					'Access-Control-Allow-Origin': '*'
+					/*,'Content-Type': 'application/json'*/
+				},
+				data: { "type": selected_type},
+				timeout: 600000,
+			}).then(
+				function(response) {
+					return response.data;
+				}, 
+				function(response) {
+					console.log('END ERROR');
+					console.log("Error", response.statusText)
+				});
+		},	
 		reloadData(){
 			
 			this.$refs.spinner.show();
@@ -128,7 +146,6 @@ export default {
 				timeout: 600000,
 			}).then(
 				function(response) {
-					//console.log('END OK');
 					context.all_refreshed = response.data['all_changed_items'];
 					parent.$apollo.queries.archived.refetch();
 					parent.$refs.spinner.hide();
