@@ -167,7 +167,7 @@ export default {
 				loadLatestRefresh(context) {
 						parent = this;
 						Vue.ajax({
-								url: 'http://localhost:5000/latest_refresh',
+								url: process.env.URL_LATEST_REFRESH,
 								//url: 'https://jsonplaceholder.typicode.com/todos',
 								method: "get",
 								headers: {
