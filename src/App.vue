@@ -49,7 +49,8 @@ export default {
 				`,
 						result(data){
 								this.visible = data.data.visible,
-										this.archived = data.data.archived
+								this.archived = data.data.archived
+								this.$refs.spinner.hide();//After every reload, spinner must be hidden
 						}
 
 				}
@@ -92,7 +93,6 @@ export default {
 				refreshData(){
 						this.$refs.spinner.show();
 						this.$apollo.queries.archived.refetch();
-						this.$refs.spinner.hide();
 				},	
 				saveComment(id, comment){
 						console.log(id,comment);
@@ -156,7 +156,6 @@ export default {
 								function(response) {
 										context.all_refreshed = response.data['all_changed_items'];
 										parent.$apollo.queries.archived.refetch();
-										parent.$refs.spinner.hide();
 										return response.data;
 								}, 
 								function(response) {
