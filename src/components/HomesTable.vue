@@ -17,13 +17,13 @@
 				<table class="zui-table">
 						<thead>
 								<tr>
-										<th v-on:click="sortAsc('id')">#</th>
 										<th v-on:click="sortAsc('title')">Title</th>
 										<th>Description</th>
-										<th v-on:click="sortAsc('price')">Price</th>
 										<th>image</th>
-										<th>Source</th>
 										<th>Comments</th>
+										<th v-on:click="sortAsc('price')">Price</th>
+										<th>Source</th>
+										<th v-on:click="sortAsc('id')">#</th>
 										<th v-on:click="sortAsc('dateCreated')">Date Created</th>
 										<th v-on:click="sortAsc('dateFound')">Last Found Date</th>
 										<th>Type</th>
@@ -31,18 +31,18 @@
 						</thead>
 						<tbody>
 								<tr v-for="home in sortedHomes ">
-										<td>{{home.id}}</td>
 										<td>{{home.title}}</td>
 										<td>{{home.description}}</td>
-										<td>{{formatNumber(home.price)}}</td>
 										<td>
 												<a target="__blank__" :href="home.advUrl">
 														<img :src="home.image" class="image">
 												</a>
 										</td>
-										<td>{{home.source}}</td>
 										<td>
-										<textarea style="height:20vh" v-model="home.comments" type="text"/><button v-on:click="$emit('saveComment', home.id, home.comments)">Apply</button>
+										<textarea rows="5" v-model="home.comments" type="text" v-on:blur="$emit('saveComment', home.id, home.comments)"/>
+										<td>{{formatNumber(home.price)}}</td>
+										<td>{{home.source}}</td>
+										<td>{{home.id}}</td>
 										</td>
 										<td>{{home.dateCreated}}</td>
 										<td>{{home.dateFound}}</td>
@@ -136,10 +136,14 @@ export default {
 }
 </script>
 <style scoped>
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
 .image {
 		z-index:10;
-		width:200px;
-		height:200px;
+		width:100px;
+		height:100px;
 		transition: transform .2s;
 
 }
@@ -154,6 +158,7 @@ export default {
 		border-collapse: collapse;
 		border-spacing: 0;
 		font: normal 13px Arial, sans-serif;
+		  table-layout: fixed;
 }
 .zui-table thead th {
 		background-color: #DDEFEF;
@@ -168,6 +173,70 @@ export default {
 		color: #333;
 		padding: 10px;
 		text-shadow: 1px 1px 1px #fff;
+		text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+
+  select, input {
+  	width: 100%;
+  }
+  textarea {
+		width:100%;
+		padding:0px;
+  }
 }
 </style>
 
