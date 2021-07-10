@@ -177,11 +177,12 @@ export default {
 						}).then(
 								function(response) {
 										var metadata = response.data;
-										var d = new Date(metadata.datetime.toString());
-										var datestring = d.getDate()  + "." + (String(d.getMonth()+1)).padStart(2,"0") + "." + d.getFullYear() + " " +
-												String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+										//var d = new Date(metadata.datetime.toString());
+										//var d = new Date(metadata.datetime.toString());
+										//var datestring = d.getDate()  + "." + (String(d.getMonth()+1)).padStart(2,"0") + "." + d.getFullYear() + " " +
+										//		String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
 										var no_of_refreshed = metadata.changed_items;
-										parent.metadata.latest_refresh = datestring;
+										parent.metadata.latest_refresh = metadata;
 										parent.metadata.refresh = no_of_refreshed;
 										return response.data;
 								}, 
