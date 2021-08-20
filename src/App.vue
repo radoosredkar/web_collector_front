@@ -50,6 +50,7 @@ export default {
 						result(data){
 								this.visible = data.data.visible,
 								this.archived = data.data.archived
+								this.loadLatestRefresh();
 								this.$refs.spinner.hide();//After every reload, spinner must be hidden
 						}
 
@@ -156,6 +157,7 @@ export default {
 								function(response) {
 										context.all_refreshed = response.data['all_changed_items'];
 										parent.$apollo.queries.archived.refetch();
+										this.loadLatestRefresh(context);
 										return response.data;
 								}, 
 								function(response) {
@@ -181,6 +183,7 @@ export default {
 										var datestring = d.getDate()  + "." + (String(d.getMonth()+1)).padStart(2,"0") + "." + d.getFullYear() + " " +
 												String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
 										var no_of_refreshed = metadata.changed_items;
+										console.log("XXXXXXXXXXXX" + datestring);
 										parent.metadata.latest_refresh = datestring;
 										parent.metadata.refresh = no_of_refreshed;
 										return response.data;
