@@ -70,7 +70,7 @@ export default {
 		},
 		created() {
 				this.loadLatestRefresh();
-				setInterval(this.loadLatestRefresh, 1000*60*15);//call every 15 minutes
+				setInterval(function(){this.loadLatestRefresh();}, 1000*60*15);//call every 15 minutes
 		},
 		computed: {
 				noOfAllHomes: function(){
@@ -166,6 +166,7 @@ export default {
 								});
 				},
 				loadLatestRefresh(context) {
+						console.log("refresh called");
 						parent = this;
 						Vue.ajax({
 								url: process.env.URL_LATEST_REFRESH,
@@ -179,14 +180,16 @@ export default {
 						}).then(
 								function(response) {
 										var metadata = response.data;
-										var d = new Date(metadata.datetime.toString());
-										var datestring = d.getDate()  + "." + (String(d.getMonth()+1)).padStart(2,"0") + "." + d.getFullYear() + " " +
-												String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
-										var no_of_refreshed = metadata.changed_items;
-										console.log("XXXXXXXXXXXX" + datestring);
-										parent.metadata.latest_refresh = datestring;
-										parent.metadata.refresh = no_of_refreshed;
-										return response.data;
+										if (metadata != null){
+												var d = new Date(metadata.datetime.toString());
+												var datestring = d.getDate()  + "." + (String(d.getMonth()+1)).padStart(2,"0") + "." + d.getFullYear() + " " +
+														String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+												var no_of_refreshed = metadata.changed_items;
+												console.log("XXXXXXXXXXXX" + datestring);
+												parent.metadata.latest_refresh = datestring;
+												parent.metadata.refresh = no_of_refreshed;
+												return response.data;
+										}
 								}, 
 								function(response) {
 										console.log('END ERROR');
