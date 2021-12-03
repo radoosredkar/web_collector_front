@@ -88,7 +88,18 @@ export default {
 					if (this.sortBy == 'dateFound' || this.sortBy == 'dateCreated') {
 						return Date.parse(a[this.sortBy])>Date.parse(b[this.sortBy]) * this.sortDir;
 					} else {
-						return a[this.sortBy]>b[this.sortBy] * this.sortDir;
+                        var p1,p2, result = NaN;
+                        try {
+                            p1 = parseFloat(a[this.sortBy])
+                            p2 = parseFloat(b[this.sortBy])
+                            result = (p1 < p2) ? -1 : (p1 > p2) ? 1 : 0;
+                            result = result * this.sortDir;
+                        }
+                        catch(err) {
+                            result = 0;
+                        }finally{
+                            return result;
+                        }
 					}
 				});
 			}else {
@@ -125,7 +136,7 @@ export default {
 	methods: {
 		sortAsc: function(sort){
 			if (sort==this.sortBy){
-				this.sortDir +=-1;
+				this.sortDir *=-1;
 			}	
 			this.sortBy = sort;
 		},

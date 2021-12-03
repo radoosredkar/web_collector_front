@@ -60,7 +60,7 @@
     "webpack-merge": "^4.1.0"
   },
   "engines": {
-    "node": "10.X.X",
+    "node": "17.X.X",
     "npm": ">= 3.0.0"
   },
   "browserslist": [
