@@ -1,13 +1,13 @@
 <template>
 	<div id="homes-table">
 		<input placeholder="filter by description, title, source" v-model="filter">
-		<select v-model="filter_type">
-			<option value="">all</option>
+		<select id="ddl_filter" v-model="filter_type">
+			<option v-if="showAll" value="">all</option>
 			<option value="NEW_RECORD">new record</option>
 			<option value="CANDIDATE">candidate</option>
 			<option value="FAVORITES">favorites</option>
-			<option value="NOT_CANDIDATE">not candidate</option>
-			<option value="ARCHIVED">archived</option>
+			<option v-if="showAll" value="NOT_CANDIDATE">not candidate</option>
+			<option v-if="showAll" value="ARCHIVED">archived</option>
 		</select>
 		<input placeholder="price from" v-model="filter_price_from">
 		<input placeholder="price from" v-model="filter_price_to">
@@ -73,7 +73,7 @@ export default {
 	data() {
 		return {
 			filter:'',
-			filter_type:'',
+			filter_type:'CANDIDATE',
 			filter_price_from:null,
 			filter_price_to:null,
 			sortBy:'',
@@ -81,6 +81,15 @@ export default {
 			sortedHomesHandler:Array
 		}
 	},
+    created: function () {
+        var params = new Proxy(new URLSearchParams(window.location.search), {
+              get: (searchParams, prop) => searchParams.get(prop),
+        });
+        this.showAll = false;
+        if (params.env == 'dev') {
+            this.showAll = true;
+        }
+    },
 	computed: {	
 		sortedHomes: function() {
 			if (this.sortBy){
@@ -111,7 +120,11 @@ export default {
 				var price_from = this.filter_price_from || 0;
 				var price_to = this.filter_price_to || 9999999;
 				this.filter = this.filter.toUpperCase();
-				this.filter_type = this.filter_type.toUpperCase();
+                this.query_filter_type = this.$route.query.filter_type
+                //filter from query param has precedence
+				this.filter_type =  this.query_filter_type || this.filter_type;
+                this.filter_type = this.filter_type.toUpperCase();
+
 				this.sortedHomesHandler = this.sortedHomesHandler.filter(row=>{
 					return (row.title.toUpperCase().includes(this.filter)
 						|| row.description.toUpperCase().includes(this.filter)
