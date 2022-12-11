@@ -35,6 +35,9 @@ docker run -dit --network wsc-network -p:8080:8080 --name wsfront -v ~/software/
 
 ```
 
+## Optional filters
+env=dev
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 - Add auto refreshing of semaphores on refresh
